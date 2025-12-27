@@ -28,8 +28,10 @@ Ensure you have the following installed on your Windows machine:
 ### Generate a New Project
 
 ```powershell
-# Using Copier from GitHub
-copier copy https://github.com/ctenopoma/python-rust-copier.git my-project
+# Clone first, then point to template/
+git clone --depth=1 https://github.com/ctenopoma/python-rust-copier.git
+cd python-rust-copier
+copier copy template my-project
 cd my-project
 
 # Bootstrap the project
