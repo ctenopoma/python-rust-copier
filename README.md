@@ -29,7 +29,7 @@ Ensure you have the following installed on your Windows machine:
 
 ```powershell
 # Using Copier
-copier copy https://github.com/your-org/rust-python-template my-project
+copier copy https://github.com/ctenopoma/python-rust-copier.git my-project
 cd my-project
 
 # Bootstrap the project
@@ -50,7 +50,7 @@ uv build
 
 ```powershell
 # Clone this repository
-git clone https://github.com/your-org/rust-python-template
+git clone https://github.com/ctenopoma/python-rust-copier.git
 cd rust-python-template
 
 # Generate from local template
