@@ -245,6 +245,12 @@ This template is released under the MIT License. Generated projects can use any 
 - **Discussions**: [GitHub Discussions](https://github.com/your-org/rust-python-template/discussions)
 - **Documentation**: See [BUILDING.md](template/files/BUILDING.md.jinja) in generated projects
 
+## CI Note
+
+- **Template CI**: The folder [ci/workflow-template.yaml](ci/workflow-template.yaml) is for this template repository's own CI and is not distributed to generated projects.
+- **Distribution boundary**: Only [template/](template/) is used by Copier when generating a project (specifically [template/copier.yaml](template/copier.yaml) → [template/files](template/files)). Anything outside `template/` is excluded from distribution.
+- **Include CI in generated projects (optional)**: If you want CI in generated projects, add workflow templates under [template/files/.github/workflows/](template/files/.github/workflows/) and gate them via prompts in [template/copier.yaml](template/copier.yaml) using `_exclude` conditions.
+
 ## Acknowledgments
 
 Built with:
