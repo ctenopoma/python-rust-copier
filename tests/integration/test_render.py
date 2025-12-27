@@ -35,7 +35,7 @@ def test_render_template_default_answers() -> None:
 
 def test_deterministic_dry_run() -> None:
     repo_root = Path(__file__).resolve().parents[2]
-    template_dir = repo_root / "template"
+    template_dir = repo_root  # Template files now at root level
     assert template_dir.exists(), f"Template directory missing: {template_dir}"
 
     with tempfile.TemporaryDirectory() as tmpdir_a, tempfile.TemporaryDirectory() as tmpdir_b:

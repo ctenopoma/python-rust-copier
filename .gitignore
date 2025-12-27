@@ -20,6 +20,7 @@ build/
 *.spec
 pip-log.txt
 pip-delete-this-directory.txt
+pytesst-*.xml
 
 # Virtual environments
 .venv/
