@@ -1,0 +1,159 @@
+_min_copier_version: "9.0.0"
+_answers_file: "copier-answers.yml"
+_subdirectory: "files"
+
+project_name:
+  type: str
+  default: "My Rust-Py Library"
+  help: "Human-friendly project name"
+
+package_name:
+  type: str
+  default: "mypkg"
+  help: "Python-safe package slug (PEP 8 module name)"
+
+version:
+  type: str
+  default: "0.1.0"
+  help: "Initial semver version"
+
+author:
+  type: str
+  default: ""
+  help: "Author name"
+
+license:
+  type: str
+  default: "MIT"
+  help: "SPDX identifier (e.g., MIT, Apache-2.0)"
+
+description:
+  type: str
+  default: "Rust-backed Python library template"
+  help: "Short project description"
+
+python_version:
+  type: str
+  default: "3.12"
+  choices:
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+    - "3.14"
+  help: "Target Python version"
+
+rust_toolchain:
+  type: str
+  default: "stable"
+  help: "Rust toolchain via rustup (e.g., stable)"
+
+uv_lock:
+  type: bool
+  default: true
+  help: "Emit uv lockfile on scaffold"
+
+ffi_boundary:
+  type: str
+  default: "PyO3"
+  help: "Fixed FFI boundary (PyO3)"
+
+target_platform:
+  type: str
+  default: "Both"
+  choices:
+    - "Windows"
+    - "Linux"
+    - "Both"
+  help: "Target deployment platform (determines which build scripts to include)"
+
+use_docker:
+  type: bool
+  default: false
+  help: "Include Docker Compose setup for development container"
+
+_exclude:
+  - "{% if target_platform == 'Linux' %}build.ps1{% endif %}"
+  - "{% if target_platform == 'Windows' %}build.sh{% endif %}"
+  - "{% if not use_docker %}Dockerfile{% endif %}"
+  - "{% if not use_docker %}docker-compose.yml{% endif %}"
+  - "{% if not use_docker %}.dockerignore{% endif %}"
+_min_copier_version: "9.0.0"
+_answers_file: "copier-answers.yml"
+
+project_name:
+  type: str
+  default: "My Rust-Py Library"
+  help: "Human-friendly project name"
+
+package_name:
+  type: str
+  default: "mypkg"
+  help: "Python-safe package slug (PEP 8 module name)"
+
+version:
+  type: str
+  default: "0.1.0"
+  help: "Initial semver version"
+
+author:
+  type: str
+  default: ""
+  help: "Author name"
+
+license:
+  type: str
+  default: "MIT"
+  help: "SPDX identifier (e.g., MIT, Apache-2.0)"
+
+description:
+  type: str
+  default: "Rust-backed Python library template"
+  help: "Short project description"
+
+python_version:
+  type: str
+  default: "3.12"
+  choices:
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+    - "3.14"
+  help: "Target Python version"
+
+rust_toolchain:
+  type: str
+  default: "stable"
+  help: "Rust toolchain via rustup (e.g., stable)"
+
+uv_lock:
+  type: bool
+  default: true
+  help: "Emit uv lockfile on scaffold"
+
+ffi_boundary:
+  type: str
+  default: "PyO3"
+  help: "Fixed FFI boundary (PyO3)"
+
+target_platform:
+  type: str
+  default: "Both"
+  choices:
+    - "Windows"
+    - "Linux"
+    - "Both"
+  help: "Target deployment platform (determines which build scripts to include)"
+
+use_docker:
+  type: bool
+  default: false
+  help: "Include Docker Compose setup for development container"
+
+_exclude:
+  - "{% if target_platform == 'Linux' %}build.ps1{% endif %}"
+  - "{% if target_platform == 'Windows' %}build.sh{% endif %}"
+  - "{% if not use_docker %}Dockerfile{% endif %}"
+  - "{% if not use_docker %}docker-compose.yml{% endif %}"
+  - "{% if not use_docker %}.dockerignore{% endif %}"

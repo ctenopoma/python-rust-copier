@@ -28,7 +28,7 @@ _REQUIRES = {
 
 def _render_template(tmp_path: Path, answers: dict[str, object]) -> Path:
     repo_root = Path(__file__).resolve().parents[2]
-    template_dir = repo_root  # Template files now at root level
+    template_dir = repo_root / "template"
     assert template_dir.exists(), f"Template directory missing: {template_dir}"
 
     cmd: list[str] = ["copier", "copy", "--trust"]
