@@ -1,0 +1,22 @@
+use pyo3::{exceptions::PyValueError, prelude::*, wrap_pyfunction};
+
+#[pyfunction]
+fn add_numbers(a: i64, b: i64) -> PyResult<i64> {
+    Ok(a + b)
+}
+
+#[pyfunction]
+fn validate_name(name: String) -> PyResult<String> {
+    if name.trim().is_empty() {
+        Err(PyValueError::new_err("name must not be empty"))
+    } else {
+        Ok(name)
+    }
+}
+
+#[pymodule]
+fn {{ package_name | replace("-", "_") }}_native(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
+    m.add_function(wrap_pyfunction!(validate_name, m)?)?;
+    Ok(())
+}

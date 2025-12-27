@@ -1,0 +1,35 @@
+{{ project_name }}
+{{ "=" * project_name|length }}
+
+Rust-backed Python package scaffold generated from the Copier template.
+
+Quickstart
+----------
+
+.. code-block:: powershell
+
+   uv sync --group dev
+   uv run maturin develop
+   uv run sphinx-build -b html docs build/docs
+
+API Reference
+-------------
+
+.. automodule:: {{ package_name }}
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Native Boundary
+---------------
+
+- PyO3 extension module: ``{{ package_name | replace('-', '_') }}_native``
+- Functions: ``add_numbers(a, b)`` and ``validate_name(name)``
+- Built with maturin via `uv build`
+
+Developer Notes
+---------------
+
+- Run `uv run ruff check` and `uv run pytest` before committing
+- Use `cargo fmt -- --check` and `cargo clippy -- -D warnings` for Rust hygiene
+- See `BUILDING.md` for detailed build and verification steps

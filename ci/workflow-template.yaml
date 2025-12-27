@@ -1,0 +1,89 @@
+name: Rust-Python Template CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint (Python + Rust)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        shell: pwsh
+        run: |
+          irm https://astral.sh/uv/install.ps1 | iex
+          uv --version
+      - name: Python Lint
+        run: |
+          uvx ruff check
+          uvx ruff format --check
+          uvx pyrefly
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Rust Lint
+        run: |
+          cargo fmt -- --check
+          cargo clippy -- -D warnings
+
+  test:
+    name: Test (Python + Rust)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        shell: pwsh
+        run: |
+          irm https://astral.sh/uv/install.ps1 | iex
+          uv --version
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Sync environment
+        run: |
+          uv sync
+      - name: Build extension (develop)
+        run: |
+          uv run maturin develop
+      - name: Run tests
+        run: |
+          uv run pytest
+      - name: Cargo tests
+        run: |
+          cargo test
+
+  build:
+    name: Build Artifacts (wheel + sdist)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        shell: pwsh
+        run: |
+          irm https://astral.sh/uv/install.ps1 | iex
+          uv --version
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build via uv (maturin backend)
+        run: |
+          uv build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

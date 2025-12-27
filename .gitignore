@@ -1,0 +1,103 @@
+# Project-specific directories (development only)
+.specify/
+.specify/**
+.github/*
+.vscode/*
+specs/*
+.prompt/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.Python
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+*.cover
+*.log
+
+# Rust
+target/
+debug/
+release/
+*.rlib
+*.rs.bk
+*.prof*
+Cargo.lock
+
+# Documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+*.mo
+
+# IDEs and editors
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+secrets/
+
+# Build outputs
+build/
+coverage/
+*.whl
+*.tar.gz
+
+# Temporary and test outputs
+tmp/
+temp/
+.cache/
+*.bak
+test-output*/
+../test-output*/
+
+# OS-specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Lock files (optional - uncomment if needed)
+# uv.lock
+# poetry.lock
+# Pipfile.lock

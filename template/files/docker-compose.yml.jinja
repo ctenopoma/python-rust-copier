@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: {{ package_name }}_dev
+    volumes:
+      # Mount the entire project directory
+      - .:/workspace
+      # Preserve Rust build cache
+      - cargo-cache:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - target-cache:/workspace/target
+    working_dir: /workspace
+    environment:
+      - RUST_BACKTRACE=1
+      - PYTHONUNBUFFERED=1
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    ports:
+      # Expose port for potential web services or documentation server
+      - "8000:8000"
+
+volumes:
+  cargo-cache:
+  cargo-git:
+  target-cache:

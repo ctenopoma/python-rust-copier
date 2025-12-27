@@ -1,0 +1,154 @@
+#!/usr/bin/env pwsh
+<#
+.SYNOPSIS
+    Build automation script for {{ project_name }} (Windows)
+
+.DESCRIPTION
+    Automates the build pipeline: sync dependencies, develop extension, lint, test, and build artifacts.
+    Optionally builds Sphinx documentation.
+
+.PARAMETER Docs
+    Build Sphinx documentation after running tests
+
+.PARAMETER Help
+    Display this help message
+
+.EXAMPLE
+    .\build.ps1
+    Run full build pipeline (sync, develop, lint, test, build)
+
+.EXAMPLE
+    .\build.ps1 -Docs
+    Run full pipeline and build documentation
+
+.EXAMPLE
+    .\build.ps1 -Help
+    Display help message
+#>
+
+param(
+    [switch]$Docs,
+    [switch]$Help,
+    [Alias('h')]
+    [switch]$HelpAlias
+)
+
+$ErrorActionPreference = "Stop"
+
+function Show-Help {
+    Write-Host @"
+Build automation script for {{ project_name }}
+
+USAGE:
+    .\build.ps1 [OPTIONS]
+
+OPTIONS:
+    -Docs          Build Sphinx documentation after tests
+    -Help, -h      Display this help message
+
+EXAMPLES:
+    .\build.ps1              Run full build pipeline
+    .\build.ps1 -Docs        Run pipeline and build docs
+    .\build.ps1 -Help        Show this help
+
+STEPS:
+    1. uv sync --group dev
+    2. uv run maturin develop
+    3. uv run ruff check
+    4. uv run ruff format --check
+    5. uv run pyrefly
+    6. cargo fmt -- --check
+    7. cargo clippy -- -D warnings
+    8. uv run pytest
+    9. cargo test
+   10. uv build
+   11. (Optional) uv run sphinx-build -b html docs build/docs
+
+"@
+}
+
+function Write-Step {
+    param([string]$Message)
+    Write-Host "`n==> $Message" -ForegroundColor Cyan
+}
+
+function Invoke-Step {
+    param(
+        [string]$Description,
+        [scriptblock]$Command
+    )
+    Write-Step $Description
+    & $Command
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Error: $Description failed with exit code $LASTEXITCODE" -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
+}
+
+if ($Help -or $HelpAlias) {
+    Show-Help
+    exit 0
+}
+
+Write-Host "{{ project_name }} Build Pipeline" -ForegroundColor Green
+Write-Host "====================================" -ForegroundColor Green
+
+# Step 1: Sync dependencies
+Invoke-Step "Syncing dependencies" {
+    uv sync --group dev
+}
+
+# Step 2: Build extension in develop mode
+Invoke-Step "Building extension (maturin develop)" {
+    uv run maturin develop --quiet
+}
+
+# Step 3-5: Python linting
+Invoke-Step "Running ruff check" {
+    uv run ruff check
+}
+
+Invoke-Step "Running ruff format check" {
+    uv run ruff format --check
+}
+
+Invoke-Step "Running pyrefly" {
+    uv run pyrefly
+}
+
+# Step 6-7: Rust linting
+Invoke-Step "Running cargo fmt check" {
+    cargo fmt -- --check
+}
+
+Invoke-Step "Running cargo clippy" {
+    cargo clippy -- -D warnings
+}
+
+# Step 8-9: Tests
+Invoke-Step "Running Python tests (pytest)" {
+    uv run pytest
+}
+
+Invoke-Step "Running Rust tests (cargo test)" {
+    cargo test
+}
+
+# Step 10: Build artifacts
+Invoke-Step "Building wheel and sdist" {
+    uv build
+}
+
+# Step 11: Optional docs
+if ($Docs) {
+    Invoke-Step "Building Sphinx documentation" {
+        uv run sphinx-build -b html docs build/docs
+    }
+    Write-Host "`n✓ Documentation built: build/docs/index.html" -ForegroundColor Green
+}
+
+Write-Host "`n✓ Build pipeline completed successfully!" -ForegroundColor Green
+Write-Host "  Artifacts: dist/" -ForegroundColor Gray
+if ($Docs) {
+    Write-Host "  Docs: build/docs/" -ForegroundColor Gray
+}

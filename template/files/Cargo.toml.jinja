@@ -1,0 +1,16 @@
+[package]
+name = "{{ package_name | replace('-', '_') }}"
+version = "{{ version }}"
+edition = "2021"
+license = "{{ license }}"
+description = "{{ description }}"
+
+[lib]
+name = "{{ package_name | replace('-', '_') }}"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.27", features = ["extension-module"] }
+
+[package.metadata.maturin]
+# Maturin build configuration

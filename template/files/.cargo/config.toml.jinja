@@ -1,0 +1,20 @@
+[build]
+target-dir = "target"
+rustflags = ["-Dwarnings"]
+
+[target.'cfg(windows)']
+rustflags = [
+    "-C",
+    "target-cpu=native",
+]
+
+[profile.dev]
+incremental = false
+debug = true
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[env]
+CARGO_TERM_COLOR = "always"

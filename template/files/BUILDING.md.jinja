@@ -1,0 +1,67 @@
+# Building {{ project_name }}
+
+This guide outlines the repeatable build pipeline for the PyO3-based Python package.
+
+## Prerequisites
+- Python >= {{ python_version }} with uv installed
+- Rust toolchain (`rustup default {{ rust_toolchain }}`) with `rustfmt` and `clippy`
+- MSVC Build Tools available on Windows (`where cl` should succeed)
+- `copier` installed for template updates
+
+## Quick build (automated script)
+{%- if target_platform in ['Windows', 'Both'] %}
+
+### Windows
+```powershell
+.\build.ps1         # Full pipeline (sync, develop, lint, test, build)
+.\build.ps1 -Docs   # Include documentation build
+.\build.ps1 -Help   # Show all options
+```
+{%- endif %}
+{%- if target_platform in ['Linux', 'Both'] %}
+
+### Linux/macOS
+```bash
+./build.sh          # Full pipeline (sync, develop, lint, test, build)
+./build.sh --docs   # Include documentation build
+./build.sh --help   # Show all options
+```
+{%- endif %}
+
+## Manual bootstrap
+```powershell
+uv sync --group dev
+uv run maturin develop
+```
+
+## Lint and test
+```powershell
+uv run ruff check
+uv run ruff format --check
+uv run pyrefly
+uv run pytest
+cargo fmt -- --check
+cargo clippy -- -D warnings
+cargo test
+```
+
+## Build artifacts
+```powershell
+uv build  # produces wheel and sdist under dist/
+```
+
+## Verify install
+```powershell
+uv tool install --quiet ./dist/*.whl
+python - <<'PY'
+from {{ package_name }} import add, validate_name
+print(add(2, 3))
+print(validate_name("demo"))
+PY
+```
+
+## Troubleshooting
+- If `copier` or `uv` report path permission errors, set `UV_LINK_MODE=copy` to avoid symlinks.
+- For linker errors, ensure the Visual Studio Build Tools are installed and retry after `rustup update`.
+- When building on CI, keep the workflow steps aligned with `nox -s lint`, `nox -s test`, `nox -s build`, and `nox -s docs` to mirror local execution.
+- If docs fail because the native module is missing, rerun `uv run maturin develop` before `uv run sphinx-build`.

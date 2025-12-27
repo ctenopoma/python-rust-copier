@@ -1,0 +1,16 @@
+import pytest
+
+from {{ package_name }} import add, validate_name
+
+
+def test_add_round_trip() -> None:
+    assert add(2, 3) == 5
+
+
+def test_validate_name_success() -> None:
+    assert validate_name("Alice") == "Alice"
+
+
+def test_validate_name_rejects_blank() -> None:
+    with pytest.raises(ValueError):
+        validate_name("   ")
