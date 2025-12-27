@@ -5,7 +5,7 @@ from pathlib import Path
 
 def test_render_template_default_answers() -> None:
     repo_root = Path(__file__).resolve().parents[2]
-    template_dir = repo_root / "template"
+    template_dir = repo_root  # Use root copier.yaml with _subdirectory: "template"
     assert template_dir.exists(), f"Template directory missing: {template_dir}"
 
     with tempfile.TemporaryDirectory() as tmpdir:

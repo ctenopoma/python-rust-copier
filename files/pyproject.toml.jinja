@@ -1,0 +1,57 @@
+[build-system]
+requires = ["maturin>=1.6,<2"]
+build-backend = "maturin"
+
+[project]
+name = "{{ package_name }}"
+version = "{{ version }}"
+description = "{{ description }}"
+readme = "README.md"
+requires-python = ">={{ python_version }},<3.15"
+authors = [{ name = "{{ author }}" }]
+license = { text = "{{ license }}" }
+classifiers = [
+    "Programming Language :: Python :: {{ python_version }}",
+    "Programming Language :: Rust",
+    "Operating System :: Microsoft :: Windows",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "maturin>=1.6,<2",
+    "ruff>=0.5.0",
+    "pyrefly>=0.40.0",
+    "pytest>=8.2.0",
+    "sphinx>=7.3.0",
+    "nox>=2024.4.15",
+]
+
+[tool.uv]
+# UV settings can be added here if needed
+
+[dependency-groups]
+dev = [
+    "maturin>=1.6,<2",
+    "ruff>=0.5.0",
+    "pyrefly>=0.40.0",
+    "pytest>=8.2.0",
+    "sphinx>=7.3.0",
+    "nox>=2024.4.15",
+]
+
+[tool.maturin]
+module-name = "{{ package_name }}._native"
+python-source = "."
+features = ["pyo3/extension-module"]
+
+[tool.ruff]
+extend = "ruff.toml"
+
+[tool.pyrefly]
+python = "{{ python_version }}"
+paths = ["{{ package_name }}", "tests"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

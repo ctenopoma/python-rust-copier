@@ -1,0 +1,36 @@
+# {{ project_name }} - Development Container
+
+FROM rust:1.75-bookworm
+
+# Install Python and build dependencies
+RUN apt-get update && apt-get install -y \
+    python{{ python_version }}-full \
+    python3-pip \
+    python3-venv \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv for fast Python package management
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy project files
+COPY . /workspace
+
+# Install Rust components
+RUN rustup component add rustfmt clippy
+
+# Set Python version environment variable
+ENV PYTHON_VERSION={{ python_version }}
+ENV PATH="/root/.cargo/bin:$PATH"
+
+# Install project dependencies using uv
+RUN uv sync --group dev
+
+# Default command
+CMD ["/bin/bash"]

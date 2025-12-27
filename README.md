@@ -28,7 +28,7 @@ Ensure you have the following installed on your Windows machine:
 ### Generate a New Project
 
 ```powershell
-# Using Copier
+# Using Copier from GitHub
 copier copy https://github.com/ctenopoma/python-rust-copier.git my-project
 cd my-project
 
@@ -51,7 +51,7 @@ uv build
 ```powershell
 # Clone this repository
 git clone https://github.com/ctenopoma/python-rust-copier.git
-cd rust-python-template
+cd python-rust-copier
 
 # Generate from local template
 copier copy template my-project
