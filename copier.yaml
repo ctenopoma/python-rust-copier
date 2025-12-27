@@ -1,6 +1,6 @@
 _min_copier_version: "9.0.0"
 _answers_file: "copier-answers.yml"
-_subdirectory: "files"
+_subdirectory: "template/files"
 
 project_name:
   type: str
