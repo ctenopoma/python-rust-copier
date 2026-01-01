@@ -1,33 +1,32 @@
 # {{ project_name }} - Development Container
 
-FROM rust:1.75-bookworm
+FROM python:{{ python_version }}-bookworm
 
-# Install Python and build dependencies
+# 必要なパッケージのインストール
 RUN apt-get update && apt-get install -y \
-    python{{ python_version }}-full \
-    python3-pip \
-    python3-venv \
     build-essential \
     curl \
-    git
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install uv for fast Python package management
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+# --- Rust のインストール ---
+# Rustの環境変数を設定
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
 
-# Set working directory
+# Rustupを使ってRustをインストール (バージョン指定可能)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.75.0 \
+    && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
+    && rustup component add rustfmt clippy
+
+# --- uv のインストール ---
+# uvのパスを通す
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
+# 作業ディレクトリ設定
 WORKDIR /workspace
-
-# Copy project files
 COPY . /workspace
 
-# Install Rust components
-RUN rustup component add rustfmt clippy
-
-# Set Python version environment variable
-ENV PYTHON_VERSION={{ python_version }}
-ENV PATH="/usr/local/cargo/bin:/root/.cargo/bin:$PATH"
-
-
-# Default command
+# デフォルトコマンド
 CMD ["/bin/bash"]
