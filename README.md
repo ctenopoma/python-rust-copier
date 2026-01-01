@@ -2,6 +2,8 @@
 
 A [Copier](https://copier.readthedocs.io/) template for scaffolding production-ready Rust-backed Python libraries on Windows with full packaging, testing, and documentation support.
 
+使い方：<https://zenn.dev/ctenopoma/articles/python_rust_template>
+
 ## Features
 
 - 🦀 **Rust + Python Integration**: Seamless PyO3 bindings for exposing Rust code to Python
