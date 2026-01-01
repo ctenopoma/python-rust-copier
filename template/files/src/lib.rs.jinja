@@ -15,7 +15,7 @@ fn validate_name(name: String) -> PyResult<String> {
 }
 
 #[pymodule]
-fn {{ package_name | replace("-", "_") }}_native(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(add_numbers, m)?)?;
     m.add_function(wrap_pyfunction!(validate_name, m)?)?;
     Ok(())

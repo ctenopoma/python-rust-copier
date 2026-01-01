@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     build-essential \
     curl \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    git
 
 # Install uv for fast Python package management
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
@@ -29,8 +28,6 @@ RUN rustup component add rustfmt clippy
 ENV PYTHON_VERSION={{ python_version }}
 ENV PATH="/root/.cargo/bin:$PATH"
 
-# Install project dependencies using uv
-RUN uv sync --group dev
 
 # Default command
 CMD ["/bin/bash"]

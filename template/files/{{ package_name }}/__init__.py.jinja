@@ -12,7 +12,7 @@ from typing import Any
 
 __all__ = ["add", "validate_name", "__version__"]
 
-_NATIVE_MODULE = "{{ package_name | replace('-', '_') }}_native"
+_NATIVE_MODULE = "{{ package_name | replace('-', '_') }}._native"
 
 
 def _load_native() -> Any:
